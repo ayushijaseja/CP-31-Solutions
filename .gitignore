@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+# But don't ignore folders (so subfolders work)
+!*/
+
+# Don't ignore C++ source files
+!*.cpp
+
+# Don't ignore gitignore itself
+!.gitignore
