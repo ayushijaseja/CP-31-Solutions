@@ -20,17 +20,31 @@ void solve()
 {
     int n;
     cin >> n;
-    vector<int> v(n);
-    vin(v);
+    vector<pair<int, int>> v;
+
+    for (int i = 0; i < n; i++)
+    {
+        int x;
+        cin >> x;
+        v.push_back({x, i + 1});
+    }
+
+    sort(v.begin(), v.end());
     int count = 0;
+
     for (int i = 0; i < n; i++)
     {
         for (int j = i + 1; j < n; j++)
         {
-            if (v[i] * v[j] == i + 1 + j + 1)
+            int pro = v[i].first * v[j].first;
+            if (pro >= 2 * n)
+                break;
+            int sum = v[i].second + v[j].second;
+            if (pro == sum)
                 count++;
         }
     }
+
     cout << count << endl;
 }
 
