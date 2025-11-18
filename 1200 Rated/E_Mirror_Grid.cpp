@@ -49,7 +49,7 @@ void solve()
         }
     }
 
-    cout << ans << "\n";
+    cout << ans << endl;
 }
 
 int32_t main()
