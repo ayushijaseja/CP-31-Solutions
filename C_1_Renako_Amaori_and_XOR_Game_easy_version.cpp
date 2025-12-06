@@ -18,8 +18,46 @@ using namespace std;
 
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
+    int n;
+    cin >> n;
+    vector<int> a(n), b(n);
+    vin(a);
+    vin(b);
+
+    int ones = 0;
+    int zeroes = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (a[i] == 1)
+            ones++;
+        else
+            zeroes++;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        if (b[i] == 1)
+            ones++;
+        else
+            zeroes++;
+    }
+
+    if (ones % 2 == 0)
+    {
+        cout << "Tie" << endl;
+        return;
+    }
+    int i;
+
+    for (i = n - 1; i >= 0; i--)
+    {
+        if (a[i] != b[i])
+            break;
+    }
+    if (i % 2 == 0)
+        cout << "Ajisai" << endl;
+    else
+        cout << "Mai" << endl;
 }
 
 int32_t main()

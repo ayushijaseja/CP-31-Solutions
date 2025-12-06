@@ -18,8 +18,28 @@ using namespace std;
 
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
+    int n;
+    cin >> n;
+    if (n % 2 != 0)
+    {
+        cout << 0 << endl;
+        return;
+    }
+    else
+    {
+        if ((n / 2) % 2 == 0)
+        {
+            int ans = (n / 4) + 1;
+            cout << ans << endl;
+            return;
+        }
+        else
+        {
+            int ans = n / 4 + 1;
+            cout << ans << endl;
+            return;
+        }
+    }
 }
 
 int32_t main()
