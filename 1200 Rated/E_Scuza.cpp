@@ -48,6 +48,7 @@ void solve()
     vin(ques);
 
     // sort(steps.begin(), steps.end());
+
     vector<int> prefix;
     prefix.push_back(steps[0]);
 
