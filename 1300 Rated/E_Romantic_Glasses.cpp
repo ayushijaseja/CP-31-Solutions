@@ -35,40 +35,31 @@ void solve()
     cin >> n;
     vector<int> v(n);
     vin(v);
-    int q;
-    cin >> q;
-    vector<pair<int, int>> queries(q);
-    for (int i = 0; i < q; i++)
-    {
-        int x, y;
-        cin >> x >> y;
-        queries[i] = {x, y};
-    }
-    vector<int> nextDiff(n);
-    nextDiff[n - 1] = -1;
-    int curr = v[n - 1];
 
-    for (int i = n - 2; i >= 0; i--)
+    vector<int> modifiedPrefix(n + 1, 0);
+    for (int i = 0; i < n; i++)
     {
-        if (v[i] == curr)
-            nextDiff[i] = nextDiff[i + 1];
+        if (i % 2 == 1)
+            modifiedPrefix[i + 1] = modifiedPrefix[i] - v[i];
         else
+            modifiedPrefix[i + 1] = v[i] + modifiedPrefix[i];
+    }
+    // vout(modifiedPrefix)
+
+    map<int, int>
+        freq;
+
+    for (int i = 0; i <= n; i++)
+    {
+        freq[modifiedPrefix[i]]++;
+        if (freq[modifiedPrefix[i]] >= 2)
         {
-            curr = v[i];
-            nextDiff[i] = i + 1;
+            cout << "YES" << endl;
+            return;
         }
     }
-
-    for (auto [l, r] : queries)
-    {
-        l--;
-        r--;
-        if (nextDiff[l] > r || nextDiff[l] == -1)
-            cout << -1 << " " << -1 << endl;
-        else
-            cout << l + 1 << " " << nextDiff[l] + 1 << endl;
-    }
-    cout << endl;
+    cout << "NO" << endl;
+    return;
 }
 
 int32_t main()
