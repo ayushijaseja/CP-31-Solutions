@@ -36,43 +36,40 @@ long long fact(long long n)
         r = (r * i) % MOD;
     return r;
 }
+bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
 void solve()
 {
     int n;
     cin >> n;
-    vector<vector<int>> digits(n);
+    set<pair<int, int>> s;
+    vector<int> v(n);
+    int sum = 0;
     for (int i = 0; i < n; i++)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
+        int x;
+        cin >> x;
+        v[i] = x;
+        sum += x;
+        s.insert({x, i});
     }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
+    vector<int> ans;
+    for (int i = 0; i < n; i++)
     {
-        for (int pos : digit)
+        int x = v[i];
+        int idx = i;
+        s.erase({x, idx});
+        if (!s.empty())
         {
-            freq[pos]++;
+            pair<int, int> mx = *s.rbegin();
+            int newSum = sum - x - mx.first;
+            if (newSum == mx.first)
+                ans.push_back(idx + 1);
         }
+        s.insert({x, idx});
     }
-    int badnum = 0;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            if (freq[pos] == 1)
-            {
-                badnum++;
-                break;
-            }
-        }
-    }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+    cout << ans.size() << endl;
+    vout(ans);
 }
 
 int32_t main()
@@ -80,7 +77,7 @@ int32_t main()
     ios::sync_with_stdio(false);
     cin.tie(0);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
         solve();
 }

@@ -41,38 +41,29 @@ void solve()
 {
     int n;
     cin >> n;
-    vector<vector<int>> digits(n);
+    vector<int> v(n);
+    vin(v);
+
+    vector<int> possible(n);
+    int k = 0;
     for (int i = 0; i < n; i++)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
+        if (v[i] < i + 1)
+            k++;
+        possible[i] = k;
     }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
+
+    int ans = 0;
+    for (int i = 3; i <= n; i++)
     {
-        for (int pos : digit)
+        if (v[i - 1] < i)
         {
-            freq[pos]++;
+            if (v[i - 1] < 2)
+                continue;
+            ans += possible[v[i - 1] - 1 - 1];
         }
     }
-    int badnum = 0;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            if (freq[pos] == 1)
-            {
-                badnum++;
-                break;
-            }
-        }
-    }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+    cout << ans << endl;
 }
 
 int32_t main()

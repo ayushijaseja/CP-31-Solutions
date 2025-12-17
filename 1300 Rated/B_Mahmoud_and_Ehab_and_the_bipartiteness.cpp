@@ -36,43 +36,36 @@ long long fact(long long n)
         r = (r * i) % MOD;
     return r;
 }
+bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
+void dfs(int color, vector<int> &visited, vector<vector<int>> &adj, int src, map<int, int> &setSize)
+{
+    setSize[color]++;
+    visited[src] = true;
+    for (auto neighbr : adj[src])
+        if (!visited[neighbr])
+            dfs(1 - color, visited, adj, neighbr, setSize);
+    return;
+}
 
 void solve()
 {
     int n;
     cin >> n;
-    vector<vector<int>> digits(n);
-    for (int i = 0; i < n; i++)
+    vector<vector<int>> adj(n + 1);
+    for (int i = 0; i < n - 1; i++)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
+        int x, y;
+        cin >> x >> y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
     }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            freq[pos]++;
-        }
-    }
-    int badnum = 0;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            if (freq[pos] == 1)
-            {
-                badnum++;
-                break;
-            }
-        }
-    }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+    int color;
+    map<int, int> setSize;
+    vector<int> visited(n + 1, false);
+    dfs(0, visited, adj, 1, setSize);
+    int a = setSize[0];
+    int b = setSize[1];
+    cout << a * b - (n - 1) << endl;
 }
 
 int32_t main()
@@ -80,7 +73,7 @@ int32_t main()
     ios::sync_with_stdio(false);
     cin.tie(0);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
         solve();
 }

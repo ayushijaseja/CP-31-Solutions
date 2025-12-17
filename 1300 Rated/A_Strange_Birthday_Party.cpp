@@ -36,43 +36,35 @@ long long fact(long long n)
         r = (r * i) % MOD;
     return r;
 }
+bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<vector<int>> digits(n);
-    for (int i = 0; i < n; i++)
+    int n, m;
+    cin >> n >> m;
+    vector<int> k(n), p(m);
+    vin(k);
+    vin(p);
+
+    sort(k.begin(), k.end());
+    int gift = 0;
+    int total = 0;
+    // vout(k);
+    for (int i = n - 1; i >= 0; i--)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
-    }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
+        // cout << "gift = " << p[gift] << " " << "cash = " << p[k[i] - 1] << " ";
+        if (p[k[i] - 1] > p[gift] && gift < m)
         {
-            freq[pos]++;
+            total += p[gift];
+            gift++;
         }
-    }
-    int badnum = 0;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
+        else
         {
-            if (freq[pos] == 1)
-            {
-                badnum++;
-                break;
-            }
+            total += p[k[i] - 1];
         }
+        // cout << total << " " << endl;
     }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+    cout << total << endl;
 }
 
 int32_t main()

@@ -15,7 +15,6 @@ using namespace std;
     }
 #define lcm(a, b) ((a) / ([](long long x, long long y) {while(y){long long t=y;y=x%y;x=t;}return x; })(a, b) * (b))
 #define MSB_POS(x) ((x) ? 63 - __builtin_clzll(x) : -1)
-const int MOD = 998244353;
 long long modpow(long long a, long long b, long long m)
 {
     long long r = 1;
@@ -29,6 +28,7 @@ long long modpow(long long a, long long b, long long m)
     }
     return r;
 }
+const int MOD = 998244353;
 long long fact(long long n)
 {
     long long r = 1;
@@ -41,35 +41,29 @@ void solve()
 {
     string s;
     cin >> s;
-
-    int len = s.length();
+    int freq = 1;
     char prev = s[0];
-    // vector<int> v;
-    int currfreq = 1;
-    int k = 0;
-    int nof = 0;
+    int len = s.length();
+    int nop = 0;
     int ways = 1;
     for (int i = 1; i < len; i++)
     {
-        if (prev == s[i])
-            currfreq++;
+        if (s[i] == prev)
+            freq++;
         else
         {
-            if (currfreq != 1)
-            {
-                nof += currfreq - 1;
-                ways = ways * fact(currfreq) % MOD;
-            }
             prev = s[i];
-            currfreq = 1;
+            nop += freq - 1;
+            ways *= (freq);
+            ways %= MOD;
+            freq = 1;
         }
     }
-    if (currfreq != 1)
-    {
-        nof += currfreq - 1;
-        ways = ways * fact(currfreq) % MOD;
-    }
-    cout << nof << " " << ways % MOD << endl;
+    nop += freq - 1;
+    ways *= (freq);
+    ways %= MOD;
+    // cout << " nop : " << nop << " ways : " << ways << endl;
+    cout << nop << " " << ((ways) * (fact(nop))) % MOD << endl;
 }
 
 int32_t main()

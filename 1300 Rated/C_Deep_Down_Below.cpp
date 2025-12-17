@@ -36,43 +36,45 @@ long long fact(long long n)
         r = (r * i) % MOD;
     return r;
 }
+bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
 void solve()
 {
     int n;
     cin >> n;
-    vector<vector<int>> digits(n);
+    vector<vector<int>> caves;
     for (int i = 0; i < n; i++)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
+        int ki;
+        cin >> ki;
+        vector<int> monstorQueue(ki);
+        vin(monstorQueue);
+        caves.push_back(monstorQueue);
     }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
+    vector<pair<int, int>> v(n);
+
+    for (int i = 0; i < n; i++)
     {
-        for (int pos : digit)
-        {
-            freq[pos]++;
-        }
+        int sz = caves[i].size();
+        v[i].second = sz;
+        int mx = caves[i][0];
+        for (int j = 1; j < sz; j++)
+            mx = max(mx, caves[i][j] - j);
+        v[i].first = mx;
     }
-    int badnum = 0;
-    for (vector<int> digit : digits)
+    sort(v.begin(), v.end());
+    vector<int> monsterKilled(n);
+    monsterKilled[0] = 0;
+    for (int i = 1; i < n; i++)
     {
-        for (int pos : digit)
-        {
-            if (freq[pos] == 1)
-            {
-                badnum++;
-                break;
-            }
-        }
+        monsterKilled[i] += monsterKilled[i - 1] + v[i - 1].second;
     }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        ans = max(ans, v[i].first - monsterKilled[i]);
+    }
+    r(ans + 1);
 }
 
 int32_t main()

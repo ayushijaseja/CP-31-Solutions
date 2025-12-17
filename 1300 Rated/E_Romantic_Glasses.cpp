@@ -44,19 +44,11 @@ void solve()
         else
             modifiedPrefix[i + 1] = v[i] + modifiedPrefix[i];
     }
-    // vout(modifiedPrefix)
 
-    map<int, int>
-        freq;
+    map<int, int> freq;
 
-    for (int i = 0; i <= n; i++)
-    {
+    for (int i = 0; i <= n; i++){
         freq[modifiedPrefix[i]]++;
-        if (freq[modifiedPrefix[i]] >= 2)
-        {
-            cout << "YES" << endl;
-            return;
-        }
     }
     cout << "NO" << endl;
     return;

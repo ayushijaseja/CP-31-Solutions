@@ -36,43 +36,26 @@ long long fact(long long n)
         r = (r * i) % MOD;
     return r;
 }
+bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<vector<int>> digits(n);
-    for (int i = 0; i < n; i++)
+    int n, k;
+    cin >> n >> k;
+
+    vector<int> v(n);
+    vin(v);
+    vector<int> prefix(n + 1);
+    prefix[0] = 0;
+    for (int i = 1; i < n + 1; i++)
+        prefix[i] = prefix[i - 1] + v[i - 1];
+    int sum = 0;
+    for (int i = 0; i < n - k + 1; i++)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
+        sum += prefix[i + k] - prefix[i];
     }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            freq[pos]++;
-        }
-    }
-    int badnum = 0;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            if (freq[pos] == 1)
-            {
-                badnum++;
-                break;
-            }
-        }
-    }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+    double avg = (double)sum / (n - k + 1);
+    cout << fixed << setprecision(10) << avg << endl;
 }
 
 int32_t main()
@@ -80,7 +63,7 @@ int32_t main()
     ios::sync_with_stdio(false);
     cin.tie(0);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
         solve();
 }

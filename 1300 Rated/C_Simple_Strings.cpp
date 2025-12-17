@@ -36,43 +36,49 @@ long long fact(long long n)
         r = (r * i) % MOD;
     return r;
 }
+bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
+
+char getchar(char a, char b)
+{
+    int ai = a - 'a';
+    int bi = b - 'a';
+    int mn = min(ai, bi);
+    int mx = max(ai, bi);
+    if (mx + 'a' == 'z' && mn + 'a' == 'a')
+        return 'b';
+    if (mx + 'a' == 'z' && mn + 'a' != 'a')
+        return 'a';
+    else
+        return mx + 1 + 'a';
+}
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<vector<int>> digits(n);
-    for (int i = 0; i < n; i++)
+    string s;
+    cin >> s;
+    int len = s.length();
+    char prev = s[0];
+    // int ans = 0;
+    for (int i = 1; i < len; i++)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
-    }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
+        if (s[i] == s[i - 1])
         {
-            freq[pos]++;
-        }
-    }
-    int badnum = 0;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            if (freq[pos] == 1)
+            if (i + 1 < len)
             {
-                badnum++;
-                break;
+                s[i] = getchar(s[i - 1], s[i + 1]);
+                // ans++;
+            }
+            else
+            {
+                if (i - 2 >= 0)
+                    s[i] = s[i - 2];
+                else
+                    s[i] = (s[i - 1] + 1) % 26 + 1 + 'a';
+                // ans++;
             }
         }
     }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+    cout << s << endl;
 }
 
 int32_t main()
@@ -80,7 +86,7 @@ int32_t main()
     ios::sync_with_stdio(false);
     cin.tie(0);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
         solve();
 }

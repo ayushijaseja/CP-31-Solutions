@@ -37,42 +37,48 @@ long long fact(long long n)
     return r;
 }
 
+int dfs(int &validSubtree, vector<vector<int>> &adj, map<int, bool> &visited, int src, string color)
+{
+    visited[src] = true;
+    int sum = 0;
+    if (color[src] == 'W')
+        sum++;
+    else
+        sum--;
+    for (auto neighbr : adj[src])
+        if (!visited[neighbr])
+            sum += dfs(validSubtree, adj, visited, neighbr, color);
+    if (sum == 0)
+        validSubtree++;
+    return sum;
+}
+
 void solve()
 {
     int n;
     cin >> n;
-    vector<vector<int>> digits(n);
+    vector<int> v(n - 1);
+    vin(v);
+    string s;
+    cin >> s;
+    vector<vector<int>> adj(n);
+    for (int i = 0; i < n - 1; i++)
+    {
+        int parent = v[i] - 1;
+        int child = i + 1;
+        adj[parent].push_back(child);
+        adj[child].push_back(parent);
+    }
+    int count = 0;
+    map<int, bool> visited;
+    int validSubtrees = 0;
+    int sum = 0;
     for (int i = 0; i < n; i++)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
+        if (!visited[i])
+            dfs(validSubtrees, adj, visited, i, s);
     }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            freq[pos]++;
-        }
-    }
-    int badnum = 0;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            if (freq[pos] == 1)
-            {
-                badnum++;
-                break;
-            }
-        }
-    }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+    cout << validSubtrees << endl;
 }
 
 int32_t main()

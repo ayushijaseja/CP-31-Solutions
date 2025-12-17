@@ -36,43 +36,25 @@ long long fact(long long n)
         r = (r * i) % MOD;
     return r;
 }
+bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
 void solve()
 {
     int n;
     cin >> n;
-    vector<vector<int>> digits(n);
+    vector<int> v(n);
+    vin(v);
+
+    set<int> include;
+    include.insert(v.begin(), v.end());
+    for (int i = 1; i < n - 1; i++)
+        if ((v[i - 1] < v[i] && v[i] < v[i + 1]) || (v[i + 1] < v[i] && v[i] < v[i - 1]))
+            include.erase(v[i]);
+    cout << include.size() << endl;
     for (int i = 0; i < n; i++)
-    {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
-    }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            freq[pos]++;
-        }
-    }
-    int badnum = 0;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            if (freq[pos] == 1)
-            {
-                badnum++;
-                break;
-            }
-        }
-    }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+        if (include.count(v[i]))
+            cout << v[i] << " ";
+    cout << endl;
 }
 
 int32_t main()

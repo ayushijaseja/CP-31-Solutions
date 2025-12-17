@@ -15,15 +15,14 @@ using namespace std;
     }
 #define lcm(a, b) ((a) / ([](long long x, long long y) {while(y){long long t=y;y=x%y;x=t;}return x; })(a, b) * (b))
 #define MSB_POS(x) ((x) ? 63 - __builtin_clzll(x) : -1)
-long long modpow(long long a, long long b, long long m)
+long long modpow(long long a, long long b)
 {
     long long r = 1;
-    a %= m;
     while (b)
     {
         if (b & 1)
-            r = r * a % m;
-        a = a * a % m;
+            r = r * a;
+        a = a * a;
         b >>= 1;
     }
     return r;
@@ -36,43 +35,44 @@ long long fact(long long n)
         r = (r * i) % MOD;
     return r;
 }
+bool isSet(int n, int i) { return (n & (1LL << i)) != 0; }
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<vector<int>> digits(n);
-    for (int i = 0; i < n; i++)
+    int n, k;
+    cin >> n >> k;
+    vector<int> numbers(n);
+    vin(numbers);
+
+    vector<int> SetBits(31);
+
+    for (int num : numbers)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
-    }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
+        for (int i = 0; i <= 30; i++)
         {
-            freq[pos]++;
+            SetBits[i] += isSet(num, i);
         }
     }
-    int badnum = 0;
-    for (vector<int> digit : digits)
+
+    set<int> settoOne;
+    for (int i = 30; i >= 0; i--)
     {
-        for (int pos : digit)
+        int unsetBits = n - SetBits[i];
+        if (unsetBits <= k && k > 0)
         {
-            if (freq[pos] == 1)
-            {
-                badnum++;
-                break;
-            }
+            settoOne.insert(i);
+            SetBits[i] = n;
+            k -= unsetBits;
         }
     }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+
+    int ans = 0;
+    for (int i = 0; i <= 30; i++)
+    {
+        if (SetBits[i] == n)
+            ans += modpow(2, i);
+    }
+    cout << ans << endl;
 }
 
 int32_t main()

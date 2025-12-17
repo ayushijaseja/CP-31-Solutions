@@ -36,43 +36,49 @@ long long fact(long long n)
         r = (r * i) % MOD;
     return r;
 }
+bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<vector<int>> digits(n);
-    for (int i = 0; i < n; i++)
+    int k, x;
+    cin >> k >> x;
+
+    int inc = k * (k + 1) / 2;
+
+    if (x <= inc)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
-    }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
+        int l = 1, r = k, ans = k;
+        while (l <= r)
         {
-            freq[pos]++;
-        }
-    }
-    int badnum = 0;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            if (freq[pos] == 1)
+            int mid = l + (r - l) / 2;
+            if ((int)mid * (mid + 1) / 2 >= x)
             {
-                badnum++;
-                break;
+                ans = mid;
+                r = mid - 1;
             }
+            else
+                l = mid + 1;
         }
+        r(ans);
     }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+    else
+    {
+        int need = x - inc;
+        int l = 1, r = k - 1, ans = k - 1;
+        while (l <= r)
+        {
+            int mid = l + (r - l) / 2;
+            int sum = mid * k - mid * (mid + 1) / 2;
+            if (sum >= need)
+            {
+                ans = mid;
+                r = mid - 1;
+            }
+            else
+                l = mid + 1;
+        }
+        r(k + ans);
+    }
 }
 
 int32_t main()

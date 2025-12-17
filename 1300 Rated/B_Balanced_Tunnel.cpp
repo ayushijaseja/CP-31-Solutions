@@ -36,43 +36,33 @@ long long fact(long long n)
         r = (r * i) % MOD;
     return r;
 }
+bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
 void solve()
 {
     int n;
     cin >> n;
-    vector<vector<int>> digits(n);
+    vector<int> a(n), b(n);
+    vin(a);
+    vin(b);
+    vector<int> posI(n);
+    vector<int> posF(n);
+    for (int i = 0; i < n; i++)
+        posI[a[i] - 1] = i;
+    for (int i = 0; i < n; i++)
+        posF[b[i] - 1] = i;
+    int ans = 0;
     for (int i = 0; i < n; i++)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
-    }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
+        if (posF[i] <= posI[i])
+            continue;
+        else
         {
-            freq[pos]++;
+            int x = posF[i] - posI[i];
+            ans = max(x, ans);
         }
     }
-    int badnum = 0;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
-        {
-            if (freq[pos] == 1)
-            {
-                badnum++;
-                break;
-            }
-        }
-    }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+    r(ans);
 }
 
 int32_t main()
@@ -80,7 +70,7 @@ int32_t main()
     ios::sync_with_stdio(false);
     cin.tie(0);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
         solve();
 }

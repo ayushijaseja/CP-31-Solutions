@@ -36,43 +36,51 @@ long long fact(long long n)
         r = (r * i) % MOD;
     return r;
 }
+bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
 void solve()
 {
     int n;
     cin >> n;
-    vector<vector<int>> digits(n);
-    for (int i = 0; i < n; i++)
+    vector<int> v(n);
+    vin(v);
+
+    int currSum = v[0];
+    int maxSum = v[0];
+    int totalSum = v[0];
+
+    int start = 0;
+    int l = 0, r = 0;
+
+    for (int i = 1; i < n; i++)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
-    }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
+        if (v[i] >= currSum + v[i])
         {
-            freq[pos]++;
+            currSum = v[i];
+            start = i;
         }
-    }
-    int badnum = 0;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
+        else
         {
-            if (freq[pos] == 1)
-            {
-                badnum++;
-                break;
-            }
+            currSum += v[i];
         }
+
+        if (currSum > maxSum)
+        {
+            maxSum = currSum;
+            l = start;
+            r = i;
+        }
+
+        totalSum += v[i];
     }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+
+    if (maxSum > totalSum)
+        r("NO") else if (maxSum == totalSum)
+        {
+            if (l == 0 && r == n - 1)
+                r("YES") else r("NO")
+        }
+    r("NO");
 }
 
 int32_t main()

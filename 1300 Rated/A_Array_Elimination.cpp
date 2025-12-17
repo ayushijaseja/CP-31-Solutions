@@ -36,43 +36,36 @@ long long fact(long long n)
         r = (r * i) % MOD;
     return r;
 }
+bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
 void solve()
 {
     int n;
     cin >> n;
-    vector<vector<int>> digits(n);
+    vector<int> v(n);
+    vin(v);
+    vector<int> bits(31);
     for (int i = 0; i < n; i++)
     {
-        int d;
-        cin >> d;
-        vector<int> number(d);
-        vin(number);
-        digits[i] = number;
-    }
-    map<int, int> freq;
-    for (vector<int> digit : digits)
-    {
-        for (int pos : digit)
+        for (int j = 0; j < 31; j++)
         {
-            freq[pos]++;
+            bits[j] += isSet(v[i], j);
         }
     }
-    int badnum = 0;
-    for (vector<int> digit : digits)
+    // vout(bits);
+    vector<int> ans;
+    for (int i = 1; i <= n; i++)
     {
-        for (int pos : digit)
+        bool ok = true;
+        for (int j = 0; j < 31; j++)
         {
-            if (freq[pos] == 1)
-            {
-                badnum++;
-                break;
-            }
+            if (bits[j] % i != 0)
+                ok = false;
         }
+        if (ok)
+            ans.push_back(i);
     }
-    if (badnum == n)
-        r("No");
-    r("Yes");
+    vout(ans);
 }
 
 int32_t main()
