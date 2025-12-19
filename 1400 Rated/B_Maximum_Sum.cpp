@@ -40,31 +40,43 @@ bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
 void solve()
 {
-    int n;
-    cin >> n;
+    int n, k;
+    cin >> n >> k;
     vector<int> v(n);
     vin(v);
 
-    int f1 = LLONG_MAX;
-    int f2 = LLONG_MAX;
-    int ans = 0;
+    sort(v.begin(), v.end());
+
+    int l = 0;
+    int r = n - 1;
+    int sum = 0;
     for (int i = 0; i < n; i++)
+        sum += v[i];
+    for (int i = 0; i < k && l <= r; i++)
     {
-        if (f1 < f2)
-            swap(f1, f2);
-        if (v[i] <= f1 && !(v[i] <= f2))
-            f1 = v[i];
-        else if (v[i] <= f2 && !(v[i] <= f1))
-            f2 = v[i];
-        else if (v[i] <= f2 && (v[i] <= f1))
-            f2 = v[i];
+        if (l + 1 < r)
+        {
+            int lop = v[l + 1] + v[l];
+            int rop = v[r];
+            if (lop <= rop)
+            {
+                sum -= lop;
+                l += 2;
+            }
+            else
+            {
+                sum -= rop;
+                r--;
+            }
+        }
         else
         {
-            f2 = v[i];
-            ans++;
+            sum -= v[r];
+            r--;
         }
     }
-    cout << ans << endl;
+
+    cout << sum << endl;
 }
 
 int32_t main()
