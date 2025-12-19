@@ -58,6 +58,9 @@ void solve()
         int twoP = pair.second;
         minV[oneP - 1] = min(twoP, minV[oneP - 1]);
     }
+
+    for (int i = n - 2; i >= 0; i--)
+        minV[i] = min(minV[i], minV[i + 1]);
     int ans = 0;
     for (int i = 0; i < n; i++)
         ans += minV[i] - i - 1;
