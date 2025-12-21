@@ -52,19 +52,19 @@ void solve()
 
     vector<int> made(n, 0);
     made[0] = 1;
-    int ans = 1;
+    int ansi = 1;
     for (int i = 0; i < n - 1; i++)
     {
         if (!made[v[i].first - 1] && !made[v[i].second - 1])
-            ans++;
+            ansi++;
         else if (made[v[i].first - 1] && made[v[i].second - 1])
-            ans--;
+            ansi--;
         made[v[i].first - 1] = 1;
         made[v[i].second - 1] = 1;
-        cout << ans << " ";
+        cout << ansi << " ";
         // vout(made);
     }
-    cout << ans << endl;
+    cout << ansi << endl;
 }
 
 int32_t main()
