@@ -40,29 +40,15 @@ bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    vector<int> c(n);
-    vin(a);
-    vin(c);
-    int currmin = c[0];
-    int ans = 0;
-    int curr = a[0];
-    for (int i = 1; i < n; i++)
-    {
-        if (currmin <= c[i])
-            curr += a[i];
-        else
-        {
-            ans += currmin * curr;
-            currmin = c[i];
-            curr = a[i];
-        }
-    }
-    ans += currmin * curr;
-
-    r(ans);
+    int n, x, y;
+    cin >> n >> x >> y;
+    vector<int> v(n);
+    vin(v);
+    int sum = accumulate(v.begin(), v.end(), 0);
+    int a = x + sum;
+    int b = x + 3 + sum;
+    if (isSet(a, 0) == isSet(y, 0))
+        r("Alice") else r("Bob")
 }
 
 int32_t main()
