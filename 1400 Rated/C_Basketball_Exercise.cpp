@@ -42,88 +42,26 @@ void solve()
 {
     int n;
     cin >> n;
-    vector<int> a(n);
-    vector<int> b(n);
-    vin(a);
-    vin(b);
+    vector<int> h1(n);
+    vector<int> h2(n);
+    vin(h1);
+    vin(h2);
 
-    int currSum = 0;
-    int prev = 0;
-    int choice = -1;
+    int best1 = 0, best2 = 0;
+    int ans = 0;
+
     for (int i = 0; i < n; i++)
     {
-        if (a[i] < b[i])
-        {
-            if (choice == -1)
-            {
-                currSum += b[i];
-                choice = 1;
-            }
-            else if (choice == 2)
-            {
-                currSum += b[i];
-                choice = 1;
-                prev = b[i];
-            }
-            else if (choice == 1)
-            {
-                int x = prev + a[i];
-                int y = b[i];
-                if (x > y)
-                {
-                    currSum += a[i];
-                    choice = 2;
-                    prev = a[i];
-                }
-                else
-                {
-                    currSum = currSum - prev + b[i];
-                    prev = b[i];
-                    if (x == y)
-                        choice = -1;
-                }
-            }
-        }
-        else if (a[i] > b[i])
-        {
-            if (choice == -1)
-            {
-                currSum += a[i];
-                choice = 2;
-            }
-            else if (choice == 1)
-            {
-                currSum += a[i];
-                choice = 2;
-                prev = a[i];
-            }
-            else if (choice == 2)
-            {
-                int x = prev + b[i];
-                int y = a[i];
-                if (x > y)
-                {
-                    currSum += b[i];
-                    choice = 1;
-                    prev = b[i];
-                }
-                else
-                {
-                    currSum = currSum - prev + a[i];
-                    prev = a[i];
-                    if (x == y)
-                        choice = -1;
-                }
-            }
-        }
-        else
-        {
-            currSum += a[i];
-            choice = -1;
-        }
+        int new_dp1 = h1[i] + best2;
+        int new_dp2 = h2[i] + best1;
+
+        best1 = max(best1, new_dp1);
+        best2 = max(best2, new_dp2);
+
+        ans = max({ans, best1, best2});
     }
-    // cout << endl;
-    r(currSum);
+
+    r(ans);
 }
 
 int32_t main()
