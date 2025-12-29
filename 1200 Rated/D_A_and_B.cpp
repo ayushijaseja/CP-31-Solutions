@@ -38,22 +38,17 @@ long long fact(long long n)
 }
 bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
-void solve()
+int func1(int n, string s)
 {
-    int n;
-    cin >> n;
-    string s;
-    cin >> s;
-
     vector<int> idx;
     for (int i = 0; i < n; i++)
         if (s[i] == 'b')
             idx.push_back(i);
     int nos = idx.size();
     if (nos <= 1)
-        r(0)
-            vector<int>
-                dist(nos + 1);
+        return 0;
+    vector<int>
+        dist(nos + 1);
 
     dist[0] = 0;
     // dist[0] = idx[0];
@@ -73,7 +68,62 @@ void solve()
         int moves = abs(a - b) + abs(d - c);
         ans = min(moves, ans);
     }
-    cout << ans << endl;
+
+    return ans;
+}
+
+// int func2(int n, string s)
+// {
+//     vector<int> idx;
+//     for (int i = 0; i < n; i++)
+//         if (s[i] == 'a')
+//             idx.push_back(i);
+//     int nos = idx.size();
+//     if (nos <= 1)
+//         return 0;
+//     vector<int>
+//         dist(nos + 1);
+
+//     dist[0] = 0;
+//     // dist[0] = idx[0];
+//     for (int i = 0; i < nos; i++)
+//         dist[i + 1] = dist[i] + idx[i];
+//     // vout(dist);
+//     int ans = LLONG_MAX;
+//     for (int i = 0; i < nos; i++)
+//     {
+//         int idxx = idx[i];
+//         int sol = i;
+//         int sor = nos - i - 1;
+//         int a = (sol * (2 * idxx - sol - 1)) / 2;
+//         int b = dist[i];
+//         int c = (sor * (2 * idxx + sor + 1)) / 2;
+//         int d = dist[nos] - dist[i + 1];
+//         int moves = abs(a - b) + abs(d - c);
+//         ans = min(moves, ans);
+//     }
+//     return ans;
+// }
+
+void solve()
+{
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+    int count = 1;
+    char prev = s[0];
+    for (int i = 1; i < n; i++)
+    {
+        if (prev != s[i])
+            count++;
+        if (count > 2)
+            break;
+    }
+    if (count <= 2)
+        r(0)
+                cout
+            << func1(n, s) << endl;
 }
 
 int32_t main()
