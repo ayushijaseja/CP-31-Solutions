@@ -42,24 +42,51 @@ void solve()
 {
     int n;
     cin >> n;
-    int p1, p2, q1, q2;
-    cin >> p1 >> p2 >> q1 >> q2;
     vector<int> v(n);
     vin(v);
-
-    int dist = (p2 - q2) * (p2 - q2) + (p1 - q1) * (p1 - q1);
-    int maxi = accumulate(v.begin(), v.end(), 0);
-    int mini;
-    int x = v[0];
-    for (int i = 1; i < n; i++)
+    int op = 0;
+    if (v[0] > v[1])
     {
-        x = max(v[i], x);
+        op += v[0] - v[1];
+        v[0] = v[1];
     }
-    mini = max(0LL, 2 * x - maxi);
 
-    if (mini * mini <= dist && dist <= maxi * maxi)
-        r("Yes")
-            r("No")
+    if (n % 2 == 1 && v[n - 1] > v[n - 2])
+    {
+        op += v[n - 1] - v[n - 2];
+        v[n - 1] = v[n - 2];
+    }
+
+    for (int i = 1; i < n - 1; i++)
+    {
+        if (i % 2 == 0)
+        {
+            int x = min(v[i - 1], v[i + 1]);
+            if (v[i] > x)
+            {
+                op += v[i] - x;
+                v[i] = x;
+            }
+        }
+    }
+
+    for (int i = 1; i < n - 1; i++)
+    {
+        if (i % 2 == 1)
+        {
+            int x = v[i - 1] + v[i + 1];
+            int y = v[i];
+            if (y < x)
+            {
+                int d = x - y;
+                v[i + 1] -= d;
+                op += d;
+            }
+        }
+    }
+    // vout(v);
+
+    r(op)
 }
 
 int32_t main()
