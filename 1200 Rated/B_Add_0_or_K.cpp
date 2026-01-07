@@ -40,12 +40,18 @@ bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
 void solve()
 {
-    int n , j , k;
-    cin>>n>>j>>k;
+    int n, k;
+    cin >> n >> k;
     vector<int> v(n);
     vin(v);
-
-    
+    int x = k + 1;
+    for (int i = 0; i < n; i++)
+    {
+        int mod = v[i] % x;
+        v[i] += mod * (k);
+    }
+    vout(v);
+    return;
 }
 
 int32_t main()
