@@ -38,112 +38,64 @@ long long fact(long long n)
 }
 bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
 
-void primeFactors(int n, map<int, int> &mp, int &ans)
-{
-    for (int i = 2; i * i <= n; i++)
-    {
-        if (n % i == 0)
-        {
-            mp[i]++;
-            n /= i;
-        }
-        if (mp[i] > 1)
-        {
-            ans = 0;
-            return;
-        }
-        while (n % i == 0)
-        {
-            if (mp[i] > 1)
-            {
-                ans = 0;
-                return;
-            }
-            n /= i;
-        }
-    }
-    if (n > 1)
-    {
-        mp[n]++;
-        if (mp[n] > 1)
-        {
-            ans = 0;
-            return;
-        }
-    }
-}
-
-void primeFactors2(int n, map<int, int> mp, int &ans)
-{
-    // cout << "n = " << n << endl;
-    for (int i = 2; i * i <= n; i++)
-    {
-        if (n % i == 0)
-        {
-            mp[i]++;
-            n /= i;
-        }
-        if (mp[i] > 1)
-        {
-            ans = 0;
-            return;
-        }
-        while (n % i == 0)
-        {
-            if (mp[i] > 1)
-            {
-                ans = 0;
-                return;
-            }
-            n /= i;
-        }
-    }
-    if (n > 1)
-    {
-        mp[n]++;
-        if (mp[n] > 1)
-        {
-            ans = 0;
-            return;
-        }
-    }
-    // for (auto ele : mp)
-    //     cout << ele.first << " " << ele.second << endl;
-}
+const int N = 2e5 + 10;
+vector<vector<int>> pfac(N + 1);
 
 void solve()
 {
     int n;
     cin >> n;
-    vector<int> a(n), b(n);
+
+    vector<int> a(n);
     vin(a);
+
+    vector<int> b(n);
     vin(b);
 
-    map<int, int> mp;
-    int ans = -1;
+    int ans = 2;
+    map<int, int> cnt;
     for (int i = 0; i < n; i++)
-        primeFactors(a[i], mp, ans);
+    {
+        for (int x : pfac[a[i]])
+        {
+            if (cnt[x] > 0)
+                ans = 0;
+            cnt[x]++;
+        }
+    }
 
-    if (ans != -1)
-    {
-        cout << 0 << endl;
-        return;
-    }
     for (int i = 0; i < n; i++)
-        primeFactors2(a[i] + 1, mp, ans);
-    if (ans != -1)
     {
-        cout << 1 << endl;
-        return;
+        for (int x : pfac[a[i]])
+            cnt[x]--;
+
+        for (int x : pfac[a[i] + 1])
+        {
+            if (cnt[x] > 0)
+                ans = min(ans, 1ll);
+        }
+
+        for (int x : pfac[a[i]])
+            cnt[x]++;
     }
-    cout << 2 << endl;
-    return;
+
+    r(ans);
 }
 
 int32_t main()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
+
+    for (int i = 2; i <= N; i++)
+    {
+        if (!pfac[i].empty())
+            continue;
+
+        for (int j = i; j <= N; j += i)
+            pfac[j].push_back(i);
+    }
+
     int t = 1;
     cin >> t;
     while (t--)

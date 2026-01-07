@@ -46,64 +46,22 @@ void solve()
     vector<int> v(sz);
     vin(v);
 
-    vector<int> prefix(2 * n);
-    prefix[0] = v[0];
-    for (int i = 1; i < 2 * n; i++)
-        prefix[i] = prefix[i - 1] + v[i];
-
-    // vout(prefix);
-
-    vector<int> suffix(2 * n);
-    suffix[2 * n - 1] = v[2 * n - 1];
-    for (int i = 2 * n - 2; i >= 0; i--)
-        suffix[i] = suffix[i + 1] + v[i];
-    // vout(suffix);
-
-    vector<int> evenNeg(2 * n);
-    int sum = 0;
-    for (int i = 0; i < 2 * n; i++)
+    vector<int> prefix(sz + 1, 0);
+    for (int i = 1; i < sz + 1; i++)
+        prefix[i] = prefix[i - 1] + v[i - 1];
+    vector<int> alt(sz + 1, 0);
+    for (int i = 1; i < sz + 1; i++)
+        alt[i] = alt[i - 1] + (i % 2 ? -1 : 1) * v[i - 1];
+    int totalSum = prefix[sz];
+    for (int i = 0; i < n; i++)
     {
-        if (i % 2 == 0)
-            sum += ((-1) * v[i]);
-        else
-            sum += v[i];
-        evenNeg[i] = sum;
-    }
-
-    // vout(evenNeg);
-
-    vector<int> oddNeg(2 * n);
-    sum = 0;
-    for (int i = 0; i < 2 * n; i++)
-    {
-        if (i % 2 == 1)
-            sum += ((-1) * v[i]);
-        else
-            sum += v[i];
-        oddNeg[i] = sum;
-    }
-
-    vector<int> ansV(n);
-
-    for (int i = 0; i < n - 1; i++)
-    {
+        int k = i + 1;
         int ans = 0;
-        if (i % 2 == 0)
-        {
-            ans = suffix[2 * n - i - 1] - prefix[i];
-            ans += evenNeg[2 * n - i - 1 - 1] - evenNeg[i];
-        }
-
-        else
-        {
-            ans += suffix[2 * n - i - 1] - prefix[i];
-            ans += oddNeg[2 * n - i - 1 - 1] - oddNeg[i];
-        }
-
-        ansV[i] = ans;
+        ans = (totalSum - prefix[sz - k]) - prefix[k];
+        ans += (k % 2 ? 1 : -1) * (alt[sz - k] - alt[k]);
+        cout << ans << " ";
     }
-    ansV[n - 1] = suffix[n] - prefix[n - 1];
-    vout(ansV);
+    cout << endl;
 }
 
 int32_t main()
