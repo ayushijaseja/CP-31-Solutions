@@ -37,47 +37,67 @@ long long fact(long long n)
     return r;
 }
 bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
+int nCr(int n, int r)
+{
+    if (r < 0 || r > n)
+        return 0;
+    r = min(r, n - r);
+    int x = 1;
+    for (int i = 1; i <= r; i++)
+    {
+        x = x * (n - r + i) / i;
+    }
+    return x;
+}
 
+{
+    int currLoad = 0;
+    int i;
+    for (i = 0; i < v.size(); i++)
+    {
+        // cout << currLoad << endl;
+        currLoad += v[i];
+        if (currLoad > w)
+        {
+            k--;
+            currLoad = v[i];
+            if (currLoad > w)
+                return false;
+        }
+        if (k == 1)
+            break;
+    }
+    for (int j = i + 1; j < v.size(); j++)
+        currLoad += v[j];
+
+    return currLoad <= w;
+}
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    vector<int> v(m);
+    int n, k, g;
+    cin >> n >> k >> g;
+
+    vector<int> v(n);
     vin(v);
 
-    sort(v.begin(), v.end());
-    for (int i = 0; i < m; i++)
-    {
-        if (v[i] >= n)
-            v[i] = n - 1;
-    }
-    vector<int> prefix(m, 0);
-    prefix[0] = v[0];
-    for (int i = 1; i < m; i++)
-        prefix[i] = prefix[i - 1] + v[i];
-    int left = 0;
-    int right = m - 1;
-    int ans = 0;
-    int count = 0;
+    int l = 0;
+    int r = 1e18;
+    int ans = -1;
 
-    while (left < right)
+    while (l <= r)
     {
-
-        if (v[right] + v[left] >= n)
+        int mid = l + (r - l) / 2;
+        // cout << mid << endl;
+        // cout << condition(mid, v, k) << endl;
+        if (condition(mid, v, k))
         {
-            int a = (right - left) * v[right];
-            int b = prefix[right - 1] - (left != 0 ? prefix[left - 1] : 0);
-            // cout << "a: " << a << "b: " << b << endl;
-            ans += a + b;
-            count += right - left;
-            right--;
+            ans = mid;
+            r = mid - 1;
         }
         else
-            left++;
+            l = mid + 1;
     }
-
-    ans = 2 * (ans - count * n + count);
-    r(ans)
+    r(ans * g)
 }
 
 int32_t main()

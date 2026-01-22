@@ -37,47 +37,38 @@ long long fact(long long n)
     return r;
 }
 bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
+int nCr(int n, int r)
+{
+    if (r < 0 || r > n)
+        return 0;
+    r = min(r, n - r);
+    int x = 1;
+    for (int i = 1; i <= r; i++)
+    {
+        x = x * (n - r + i) / i;
+    }
+    return x;
+}
 
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    vector<int> v(m);
+    int n;
+    cin >> n;
+    vector<int> v(n);
     vin(v);
 
-    sort(v.begin(), v.end());
-    for (int i = 0; i < m; i++)
+    int countOne = 0;
+    int countZero = 0;
+
+    for (int i = 0; i < n; i++)
     {
-        if (v[i] >= n)
-            v[i] = n - 1;
+        if (v[i] == 0)
+            countZero++;
+        else if (v[i] == 1)
+            countOne++;
     }
-    vector<int> prefix(m, 0);
-    prefix[0] = v[0];
-    for (int i = 1; i < m; i++)
-        prefix[i] = prefix[i - 1] + v[i];
-    int left = 0;
-    int right = m - 1;
-    int ans = 0;
-    int count = 0;
-
-    while (left < right)
-    {
-
-        if (v[right] + v[left] >= n)
-        {
-            int a = (right - left) * v[right];
-            int b = prefix[right - 1] - (left != 0 ? prefix[left - 1] : 0);
-            // cout << "a: " << a << "b: " << b << endl;
-            ans += a + b;
-            count += right - left;
-            right--;
-        }
-        else
-            left++;
-    }
-
-    ans = 2 * (ans - count * n + count);
-    r(ans)
+    if (countZero == 0)
+        r("NO") else if (countOne != 0) r("YES") else if (countZero == 1) r("YES") else r("NO")
 }
 
 int32_t main()

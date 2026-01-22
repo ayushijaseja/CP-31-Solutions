@@ -37,47 +37,72 @@ long long fact(long long n)
     return r;
 }
 bool isSet(int n, int i) { return (n & (1 << i)) != 0; }
+int nCr(int n, int r)
+{
+    if (r < 0 || r > n)
+        return 0;
+    r = min(r, n - r);
+    int x = 1;
+    for (int i = 1; i <= r; i++)
+    {
+        x = x * (n - r + i) / i;
+    }
+    return x;
+}
 
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    vector<int> v(m);
+    int n, k;
+    cin >> n >> k;
+    vector<int> v(n);
     vin(v);
-
-    sort(v.begin(), v.end());
-    for (int i = 0; i < m; i++)
+    for (int i = 0; i < n; i++)
+        v[i] = abs(v[i]);
+    priority_queue<int> q;
+    for (int i = 0; i < n; i++)
+        q.push(v[i]);
+    while (!q.empty() && k)
     {
-        if (v[i] >= n)
-            v[i] = n - 1;
+        k--;
+        int front = q.top();
+        q.pop();
+        front--;
+        if (front)
+            q.push(front);
     }
-    vector<int> prefix(m, 0);
-    prefix[0] = v[0];
-    for (int i = 1; i < m; i++)
-        prefix[i] = prefix[i - 1] + v[i];
-    int left = 0;
-    int right = m - 1;
     int ans = 0;
-    int count = 0;
-
-    while (left < right)
+    while (!q.empty())
     {
-
-        if (v[right] + v[left] >= n)
-        {
-            int a = (right - left) * v[right];
-            int b = prefix[right - 1] - (left != 0 ? prefix[left - 1] : 0);
-            // cout << "a: " << a << "b: " << b << endl;
-            ans += a + b;
-            count += right - left;
-            right--;
-        }
-        else
-            left++;
+        ans += q.top() * q.top();
+        q.pop();
     }
+    if (k & 1)
+        cout << ans + 1 << endl;
+    else
+        cout << ans << endl;
+    // sort(v.rbegin(), v.rend());
 
-    ans = 2 * (ans - count * n + count);
-    r(ans)
+    // for (int i = 0; i < n; i++)
+    // {
+    //     if (v[i] >= k)
+    //     {
+    //         v[i] = v[i] - k;
+    //         k = 0;
+    //         break;
+    //     }
+    //     else
+    //     {
+    //         k = k - v[i];
+    //         v[i] = 0;
+    //     }
+    // }
+    // // vout(v);
+    // int ans = 0;
+    // if (k != 0)
+    //     ans += k % 2;
+    // for (int i = 0; i < n; i++)
+    //     ans += v[i] * v[i];
+    // r(ans);
 }
 
 int32_t main()
